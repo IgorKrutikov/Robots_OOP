@@ -15,6 +15,8 @@ import java.util.Locale;
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
+    private static final Locale locale = new Locale("ru", "RU");
+
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
@@ -38,15 +40,13 @@ public class MainApplicationFrame extends JFrame {
 
         JMenuItem quit = new JMenuItem("quit", KeyEvent.VK_Q);
         quit.addActionListener( (event) -> {
-            int res = JOptionPane.showConfirmDialog(null, "Выйти из программы?");
-            if (res == JOptionPane.YES_OPTION)
-                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         });
         bar.add(quit);
         setJMenuBar(bar);
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                closeApplication();
+                closeApplicationConfirm();
             }
         });
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -121,9 +121,18 @@ public class MainApplicationFrame extends JFrame {
         }
     }
 
-    private  void closeApplication(){
-        setVisible(false);
-        dispose();
-        System.exit(0);
+    private  void closeApplicationConfirm(){
+
+
+        UIManager.put("OptionPane.yesButtonText", "Да");
+        UIManager.put("OptionPane.noButtonText", "Нет");
+        UIManager.put("OptionPane.cancelButtonText", "Отмена");
+
+        int res = JOptionPane.showConfirmDialog(null, "Выйти из программы?");
+        if (res == JOptionPane.YES_OPTION) {
+            setVisible(false);
+            dispose();
+            System.exit(0);
+        }
     }
 }
