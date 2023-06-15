@@ -15,8 +15,6 @@ import java.util.Locale;
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
-    private static final Locale locale = new Locale("ru", "RU");
-
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
@@ -122,11 +120,6 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private  void closeApplicationConfirm(){
-
-
-        UIManager.put("OptionPane.yesButtonText", "Да");
-        UIManager.put("OptionPane.noButtonText", "Нет");
-        UIManager.put("OptionPane.cancelButtonText", "Отмена");
 
         int res = JOptionPane.showConfirmDialog(null, "Выйти из программы?");
         if (res == JOptionPane.YES_OPTION) {
