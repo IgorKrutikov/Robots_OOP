@@ -123,9 +123,7 @@ public class MainApplicationFrame extends JFrame {
 
         int res = JOptionPane.showConfirmDialog(null, "Выйти из программы?");
         if (res == JOptionPane.YES_OPTION) {
-            setVisible(false);
-            dispose();
-            System.exit(0);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
     }
 }
