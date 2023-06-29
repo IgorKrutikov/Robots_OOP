@@ -39,7 +39,7 @@ public class MainApplicationFrame extends JFrame {
 
         JMenuBar bar = generateMenuBar();
 
-        JButton quit = new JButton("quit");
+        JButton quit = new JButton("Выйти");
         quit.addActionListener((event) ->
                 this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING))
         );
