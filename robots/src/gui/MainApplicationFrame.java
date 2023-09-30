@@ -1,11 +1,13 @@
 package gui;
 
 import log.Logger;
+import save.Saver;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Locale;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Что требуется сделать:
@@ -14,6 +16,8 @@ import java.util.Locale;
  */
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
+    private final GameWindow gameWindow = new GameWindow();
+    private final LogWindow logWindow = createLogWindow();
 
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
@@ -26,24 +30,23 @@ public class MainApplicationFrame extends JFrame {
 
         setContentPane(desktopPane);
 
+        Saver.fillFrame(logWindow, "LogWindow");
+        Saver.fillFrame(gameWindow, "GameWindow");
+        Saver.fillFrame(this, "MainAppFrame");
 
-        LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
-
-        GameWindow gameWindow = new GameWindow();
-        gameWindow.setSize(400, 400);
         addWindow(gameWindow);
 
         JMenuBar bar = generateMenuBar();
 
-        JMenuItem quit = new JMenuItem("quit", KeyEvent.VK_Q);
-        quit.addActionListener( (event) -> {
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        });
+        JButton quit = new JButton("quit");
+        quit.addActionListener((event) ->
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING))
+        );
         bar.add(quit);
         setJMenuBar(bar);
-        addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
                 closeApplicationConfirm();
             }
         });
@@ -119,10 +122,14 @@ public class MainApplicationFrame extends JFrame {
         }
     }
 
-    private  void closeApplicationConfirm(){
+    private void closeApplicationConfirm() {
 
         int res = JOptionPane.showConfirmDialog(null, "Выйти из программы?");
         if (res == JOptionPane.YES_OPTION) {
+            Saver.save(this, "MainAppFrame");
+            Saver.save(gameWindow, "GameWindow");
+            Saver.save(logWindow, "LogWindow");
+            Saver.flush();
             setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
     }
